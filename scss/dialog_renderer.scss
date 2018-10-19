@@ -1,0 +1,11 @@
+#dialog-root {
+  height: calc(100% - var(--softkeybar-height));
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  .header {
+    text-transform: capitalize;
+  }
+}

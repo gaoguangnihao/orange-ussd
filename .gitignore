@@ -1,0 +1,8 @@
+node_modules/
+built/
+.nyc_output/
+.DS_Store
+dist/
+.*.sw*
+__snapshots__
+coverage/

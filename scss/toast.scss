@@ -1,0 +1,21 @@
+#toast-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--softkeybar-height));
+  pointer-events: none;
+  z-index: 9999999;
+}
+
+.toast {
+  bottom: 1rem;
+  left: 1rem;
+  width: calc(100% - 1rem - 1rem);
+  background: var(--color-gs20);
+  color: var(--color-gs90);
+  padding: 1rem;
+  position: absolute;
+  box-sizing: border-box;
+  border: solid 1px var(--highlight-color);
+}

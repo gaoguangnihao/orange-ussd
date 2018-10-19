@@ -1,0 +1,33 @@
+{
+  "name": "Gtest",
+  "description": "Gtest webpack app",
+  "launch_path": "/index.html",
+  "type": "certified",
+  "isCursorEnabled":true,
+  "icons": {
+    "16": "/res/icons/icon16x16.png",
+    "48": "/res/icons/icon48x48.png",
+    "60": "/res/icons/icon60x60.png",
+    "128": "/res/icons/icon128x128.png"
+  },
+
+  "permissions": {
+    "feature-detection": {},
+    "telephony":{},
+    "voicemail":{},
+    "mobileconnection":{},
+    "themeable":{},
+    "settings":{ "access": "readwrite" },
+    "contacts":{ "access": "readwrite" },
+    "softkey":{},
+    "systemXHR" : {},
+    "device-storage:sdcard": { "access": "readcreate" },
+    "desktop-notification":{},
+    "networkstats-manage": {}
+  },
+
+  "developer": {
+    "name": "gaoguang",
+    "url": "http://example.com"
+  }
+}
