@@ -1,14 +1,13 @@
 {
-  "name": "Gtest",
-  "description": "Gtest webpack app",
+  "name": "Orange-ussd",
+  "description": "webpack app",
   "launch_path": "/index.html",
   "type": "certified",
   "isCursorEnabled":true,
   "icons": {
-    "16": "/res/icons/icon16x16.png",
-    "48": "/res/icons/icon48x48.png",
-    "60": "/res/icons/icon60x60.png",
-    "128": "/res/icons/icon128x128.png"
+    "56": "/style/icons/56.png",
+    "84": "/style/icons/84.png",
+    "112": "/style/icons/112.png"
   },
 
   "permissions": {
@@ -27,7 +26,7 @@
   },
 
   "developer": {
-    "name": "gaoguang",
+    "name": "kaiso tech",
     "url": "http://example.com"
   }
 }

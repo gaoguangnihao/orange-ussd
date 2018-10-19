@@ -1,8 +1,7 @@
 html,
 body,
 #root,
-#app,
-#ssr {
+#app {
   width: 100%;
   height: 100%;
   padding: 0;
@@ -12,20 +11,11 @@ body,
   background-color: white;
 }
 
-#root,
-#ssr {
+#root {
+  z-index: 1;
   position: absolute;
   top: 0;
   left: 0;
-}
-
-#root {
-  z-index: 1;
-}
-
-#ssr {
-  z-index: 2;
-  background-color: transparent;
 }
 
 .softkey-placeholder {
@@ -97,51 +87,6 @@ body,
 
 .highlight {
   font-weight: bold;
-}
-
-.icon {
-  &.import {
-    background-image: url('../style/images/import_contacts.png');
-  }
-
-  &.export {
-    background-image: url('../style/images/export_contacts.png');
-  }
-
-  &.sim {
-    background-image: url('../style/images/import_SIM.png');
-  }
-
-  &.sd {
-    background-image: url('../style/images/import_sd.png');
-  }
-
-  &.bt {
-    background-image: url('../style/images/bluetooth_icon.png');
-  }
-
-  &.gmail {
-    background-image: url('../style/images/gmail_icon.png');
-  }
-
-  &.outlook {
-    background-image: url('../style/images/outlook_icon.png');
-  }
-
-  &.favorite {
-    background-image: url('../style/images/icon-fav-button-on.png');
-  }
-
-  &.icelist {
-    background: url('../style/icons/ic_ice_contact.png') no-repeat 0 -3.2rem pink;
-    border-radius: 1.2rem;
-    width: 3.2rem;
-    height: 3.2rem;
-  }
-
-  &.arrow-to-right {
-    background: url('../style/images/header_nav_arrow_r.png') center center no-repeat;
-  }
 }
 
 html[dir='rtl'] .icon.arrow-to-right {

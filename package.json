@@ -1,9 +1,9 @@
 {
-  "name": "contact",
+  "name": "orange-ussd",
   "version": "2.0.0",
-  "description" : "KaiOS core app for contacts management",
-  "main": "src/_app.js",
-  "author": "hank.chiu@kaiostech.com",
+  "description" : "orange-ussd",
+  "main": "src/app.js",
+  "author": "guang.gao@kaiostech.com",
   "scripts": {
     "build": "webpack",
     "server": "node start.js",
