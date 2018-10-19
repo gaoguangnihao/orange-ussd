@@ -110,7 +110,7 @@ class DialHelper extends BaseModule {
     });
 
     Promise.all(promises).then((items) => {
-      Service.request('showDialog', {
+      this.emit('showDialog', {
         type: 'alert',
         header: type.toUpperCase(),
         content: items.join('\n'),
@@ -118,7 +118,7 @@ class DialHelper extends BaseModule {
         noClose: false
       });
     }, (msg) => {
-      Service.request('showDialog', {
+      this.emit('showDialog', {
         type: 'alert',
         header: type.toUpperCase(),
         content: msg.message,
@@ -504,7 +504,7 @@ class DialHelper extends BaseModule {
       dialogOption.translated = true;
     }
 
-    Service.request('showDialog', dialogOption);
+    this.emit('showDialog', dialogOption);
   }
 
   isValid(number) {

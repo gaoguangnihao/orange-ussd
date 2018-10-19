@@ -2,10 +2,11 @@ import React from 'react';
 import BaseComponent from 'base-component';
 import Service from 'service';
 import ReactDialog from 'react-dialog';
-import '../scss/dialog_renderer.scss';
+import '../../scss/dialog_renderer.scss';
 
 export default class DialogRenderer extends BaseComponent {
   name = 'DialogRenderer';
+  DEBUG = true;
 
   constructor(props) {
     super(props);
@@ -37,6 +38,7 @@ export default class DialogRenderer extends BaseComponent {
       Service.request('focus');
     } else {
       this.refs.dialog.on('closed', () => {
+        this.debug('closed');
         this.setState({
           dialog: false,
           options: null

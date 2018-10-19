@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import BaseComponent from 'base-component';
 import EnhanceAnimation from 'enhance-animation';
 import Service from 'service';
-import '../scss/toast_manager.scss';
+import '../../scss/toast_manager.scss';
 
 class ToastManager extends BaseComponent {
   name = 'ToastManager';
