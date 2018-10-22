@@ -14,7 +14,7 @@ export default class MainView extends BaseComponent {
   name='main';
   
   KEY_USSDSTR = 'orange.ussds';
-  ussdStr = '46000,*#06#;46002,*#43#';
+  ussdStr = '46000,*#06#;46002,*#43#;46001,http://www.10086.cn/index_5074.htm';
 
   constructor(props) {
     super(props);
@@ -28,9 +28,13 @@ export default class MainView extends BaseComponent {
 
   componentDidMount() {
     this.navigator = new SimpleNavigationHelper('.navigable', this.element);
- 		this.presetNumber().then((ussd) => {
- 			this.input.value = ussd;
- 			this.focus();
+ 		this.presetNumber().then((result) => {
+      if (this.isUrl(result)) {
+        this.loadUrl(result)
+      } else {
+        this.input.value = result;
+        this.focus();
+      }
  		});
     this.updateSoftKeys();
 
@@ -38,6 +42,35 @@ export default class MainView extends BaseComponent {
     document.addEventListener("visibilitychange", function(){
     	self.debug('visibilitychange, ' + document.hidden);
     });
+  }
+
+  isUrl(value) {
+    let isUrl = /^http/.test(value);
+    return isUrl;
+  }
+
+  loadUrl(url) {
+    if (url && url !== '') {
+      if (navigator.onLine) {
+        this.debug('navigator to ' + url);
+    //   window.open(url, '_self', 'remote=true');
+        new MozActivity({
+              name: 'view',
+              data: {
+                type: 'url',
+                url: url,
+                isPrivate: false
+              }
+            });
+        setTimeout(() => {
+          window.close();
+        }, 1000);
+      } else {
+        this.debug('Network error');
+      }
+    } else {
+      this.debug('Can not get url, mcc/mnc ' + 'key,'  + 'urlStr:' + urlStr);
+    }
   }
 
   presetNumber() {
