@@ -14,7 +14,8 @@ export default class MainView extends BaseComponent {
   name='main';
   
   KEY_USSDSTR = 'orange.ussds';
-  ussdStr = '46000,*#06#;46002,*#43#;46001,http://www.10086.cn/index_5074.htm';
+  ussdStr = '65202,http://myorange.orange.co.bw/myorangewebapp/MyOrange-Botswana/;62402,http://myorange.orange.cm/myorangewebapp/MyOrange-Cameroon/;61203,https://espaceclient.orange.ci/;61101,http://myorange.orange-guinee.com/myorangewebapp/MyOrange-Guinee/;41677,http://ssowt-zr.orange.jo/myorangewebapp/MyOrange-Jordan/;64602,http://zasyorange.orange.mg/myorangewebapp/MyOrange-Madagascar/index.html;60400,https://espace-client.orange.ma/sso/login;61404,http://myorange.orange.ne/myorangewebapp/MyOrange-Niger/;63086,http://myorange.orange.cd/myorangewebapp/MyOrange-CongoDemocratique/;63089,http://myorange.orange.cd/myorangewebapp/MyOrange-CongoDemocratique/;60801,http://myorange.orange.sn/myorangewebapp/MyOrange-Senegal/;61302, ;62303, ;60201, ;63203, ;61807, ;61002, ;61901, ;60501, ;';
+  //ussdStr = '61302,*144#;65202,*145#;63086,*144#;63089,*144#;62303,#144#;61203,#144#;62402,#150#;60201,#115#;63203,#144#;61101,#144#*144#;41677, ;61807,*144#;60400, ;61002,#144#;64602,#144#;61404,#144#;61901,#144#;60801,#144#;60501,*139#;';
 
   constructor(props) {
     super(props);
@@ -33,15 +34,15 @@ export default class MainView extends BaseComponent {
         this.loadUrl(result)
       } else {
         this.input.value = result;
-        this.focus();
       }
  		});
-    this.updateSoftKeys();
 
-    let self = this;
-    document.addEventListener("visibilitychange", function(){
-    	self.debug('visibilitychange, ' + document.hidden);
-    });
+    this.focus();
+    this.updateSoftKeys();
+    // let self = this;
+    // document.addEventListener("visibilitychange", function(){
+    // 	self.debug('visibilitychange, ' + document.hidden);
+    // });
   }
 
   isUrl(value) {
@@ -76,14 +77,14 @@ export default class MainView extends BaseComponent {
   presetNumber() {
   	var self = this;
   	return new Promise((resolve, reject) => {
-  		if (!navigator.mozMobileConnections[0] && !navigator.mozMobileConnections[0].iccId) {
+  		if (!navigator.mozMobileConnections[0] || !navigator.mozMobileConnections[0].iccId) {
   		  this.debug('iccId is null');
   		  reject();
   		  return;
   		} 
 
   		var iccId = navigator.mozMobileConnections[0].iccId;
-  		if (!navigator.mozIccManager && !navigator.mozIccManager.getIccById(iccId)) {
+  		if (!navigator.mozIccManager || !navigator.mozIccManager.getIccById(iccId)) {
   		  this.debug('Can not get iccInfo');
   		  reject()
   		  return;
