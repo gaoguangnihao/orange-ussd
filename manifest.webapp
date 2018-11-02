@@ -11,10 +11,16 @@
   },
 
   "permissions": {
+    "feature-detection": {},
     "telephony":{},
-    "settings":{ "access": "readwrite" },
+    "voicemail":{},
     "mobileconnection":{},
+    "themeable":{},
+    "settings":{ "access": "readwrite" },
+    "contacts":{ "access": "readwrite" },
     "softkey":{},
+    "systemXHR" : {},
+    "device-storage:sdcard": { "access": "readcreate" },
     "desktop-notification":{}
   },
 
