@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import BaseComponent from 'base-component';
 import 'common-scss';
-import 'gaia-icons/gaia-icons.css';
 import ReactSoftKey from 'react-soft-key';
 import Service from 'service';
 import SimpleNavigationHelper from 'simple-navigation-helper';

@@ -6,9 +6,6 @@
   "author": "guang.gao@kaiostech.com",
   "scripts": {
     "build": "webpack",
-    "server": "node start.js",
-    "test": "jest --no-cache --verbose --updateSnapshot",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "clean": "rm build/bundle.js",
     "lint": "npm run lint:css && npm run lint:js",
     "lint:js": "eslint src --quiet",
@@ -32,7 +29,6 @@
     "babel-register": "6.18.0",
     "babel-resolver": "1.1.0",
     "browser-env": "2.0.21",
-    "coveralls": "2.11.9",
     "css-loader": "0.23.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-15.4": "^1.0.5",
@@ -45,8 +41,6 @@
     "extract-text-webpack-plugin": "2.1.2",
     "file-loader": "0.8.5",
     "ignore-styles": "5.0.1",
-    "jest": "^22.4.3",
-    "jest-css-modules": "^1.1.0",
     "node-sass": "4.7.2",
     "nyc": "6.4.0",
     "pre-commit": "1.2.2",
@@ -66,7 +60,6 @@
     "common-scss": "git+ssh://git@git.kaiostech.com:shared/common-scss.git",
     "enhance-animation": "git+ssh://git@git.kaiostech.com:shared/enhance-animation.git",
     "fatigue-scripts": "git+ssh://git@git.kaiostech.com:shared/fatigue-scripts.git",
-    "gaia-icons": "git+ssh://git@git.kaiostech.com:shared/gaia-icons.git",
     "l10n": "git+ssh://git@git.kaiostech.com:shared/l10n.git",
     "locales": "git+ssh://git@git.kaiostech.com:shared/locales.git",
     "mime-mapper": "git+ssh://git@git.kaiostech.com:shared/mime-mapper.git",
@@ -78,35 +71,11 @@
     "react-sim-chooser": "git+ssh://git@git.kaiostech.com:shared/react-sim-chooser.git",
     "react-soft-key": "git+ssh://git@git.kaiostech.com:shared/react-soft-key.git",
     "react-window-manager": "git+ssh://git@git.kaiostech.com:shared/react-window-manager.git",
-    "sdcard-manager": "git+ssh://git@git.kaiostech.com:shared/sdcard-manager.git",
     "service": "git+ssh://git@git.kaiostech.com:shared/service.git",
     "sim-settings-helper": "git+ssh://git@git.kaiostech.com:shared/sim-settings-helper.git",
     "simple-navigation-helper": "git+ssh://git@git.kaiostech.com:shared/simple-navigation-helper.git",
     "simslot-manager": "git+ssh://git@git.kaiostech.com:shared/simslot-manager.git",
     "soft-key-store": "git+ssh://git@git.kaiostech.com:shared/soft-key-store.git"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
-    ],
-    "modulePaths": [
-      "<rootDir>/src/",
-      "<rootDir>/scss/"
-    ],
-    "setupFiles": [
-      "./test/setup/jestSetup.js"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/.yarn-cache/"
-    ],
-    "transform": {
-      "\\.(scss|css)$": "<rootDir>/node_modules/jest-css-modules",
-      "^.+\\.jsx?$": "babel-jest",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|properties)$": "<rootDir>/test/setup/fileTransformer.js"
-    },
-    "transformIgnorePatterns": []
   },
   "babel": {
     "presets": [
