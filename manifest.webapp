@@ -11,10 +11,9 @@
   },
 
   "permissions": {
-    "feature-detection": {},
     "telephony":{},
+    "settings":{ "access": "readwrite" },
     "mobileconnection":{},
-    "themeable":{},
     "softkey":{},
     "desktop-notification":{}
   },
