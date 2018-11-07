@@ -8,14 +8,11 @@ import ReactSimChooser from 'react-sim-chooser';
 import SoftKeyStore from 'soft-key-store';
 import Service from 'service';
 import DialogRenderer from './components/dialog_renderer';
+import Config from './config.js';
 
 export default class MainView extends BaseComponent {
   DEBUG = true;
   name='main';
-  
-  KEY_USSDSTR = 'orange.ussds';
-  ussdStr = '65202,http://myorange.orange.co.bw/myorangewebapp/MyOrange-Botswana/;62402,http://myorange.orange.cm/myorangewebapp/MyOrange-Cameroon/;61203,https://espaceclient.orange.ci/;61101,http://myorange.orange-guinee.com/myorangewebapp/MyOrange-Guinee/;41677,http://ssowt-zr.orange.jo/myorangewebapp/MyOrange-Jordan/;64602,http://zasyorange.orange.mg/myorangewebapp/MyOrange-Madagascar/index.html;60400,https://espace-client.orange.ma/sso/login;61404,http://myorange.orange.ne/myorangewebapp/MyOrange-Niger/;63086,http://myorange.orange.cd/myorangewebapp/MyOrange-CongoDemocratique/;63089,http://myorange.orange.cd/myorangewebapp/MyOrange-CongoDemocratique/;60801,http://myorange.orange.sn/myorangewebapp/MyOrange-Senegal/;61302, ;62303, ;60201, ;63203, ;61807, ;61002, ;61901, ;60501, ;';
-  //ussdStr = '61302,*144#;65202,*145#;63086,*144#;63089,*144#;62303,#144#;61203,#144#;62402,#150#;60201,#115#;63203,#144#;61101,#144#*144#;41677, ;61807,*144#;60400, ;61002,#144#;64602,#144#;61404,#144#;61901,#144#;60801,#144#;60501,*139#;';
 
   constructor(props) {
     super(props);
@@ -39,10 +36,6 @@ export default class MainView extends BaseComponent {
 
     this.focus();
     this.updateSoftKeys();
-    // let self = this;
-    // document.addEventListener("visibilitychange", function(){
-    // 	self.debug('visibilitychange, ' + document.hidden);
-    // });
   }
 
   isUrl(value) {
@@ -75,7 +68,7 @@ export default class MainView extends BaseComponent {
   }
 
   presetNumber() {
-  	var self = this;
+  	let self = this;
   	return new Promise((resolve, reject) => {
   		if (!navigator.mozMobileConnections[0] || !navigator.mozMobileConnections[0].iccId) {
   		  this.debug('iccId is null');
@@ -83,25 +76,23 @@ export default class MainView extends BaseComponent {
   		  return;
   		} 
 
-  		var iccId = navigator.mozMobileConnections[0].iccId;
+  		let iccId = navigator.mozMobileConnections[0].iccId;
   		if (!navigator.mozIccManager || !navigator.mozIccManager.getIccById(iccId)) {
   		  this.debug('Can not get iccInfo');
   		  reject()
   		  return;
   		}
   		// Genarate the key by mcc/mnc
-  		var iccInfo = navigator.mozIccManager.getIccById(iccId).iccInfo;
-  		var key = iccInfo.mcc + iccInfo.mnc;
+  		let iccInfo = navigator.mozIccManager.getIccById(iccId).iccInfo;
+  		let key = iccInfo.mcc + iccInfo.mnc;
   		this.debug('key :'  + key);
 
   		// Get config url string from settings db
-  		navigator.mozSettings.createLock().get(self.KEY_USSDSTR).then((result) => {
-  		  var ussds = result[self.KEY_USSDSTR];
-  		  if (ussds) {
-  		    self.ussdStr = ussds;
-  		  }
-  		  this.debug('ussdStr:' + self.ussdStr);
-  		  var ussd = self.parseUssdbyKey(self.ussdStr, key);
+  		navigator.mozSettings.createLock().get(Config.KEY_USSDSTR).then((result) => {
+  		  let ussds = result[Config.KEY_USSDSTR];
+        ussds = ussds || Config.ussdStr;
+  		  this.debug('ussds:' + ussds);
+  		  let ussd = self.parseUssdbyKey(ussds, key);
   		  self.debug(ussd);
   		  resolve(ussd);
   		}, () => {
@@ -112,10 +103,10 @@ export default class MainView extends BaseComponent {
   }
 
   parseUssdbyKey(str, key) {
-    var ussdArr = str.split(';');
-    var ussd = '';
+    let ussdArr = str.split(';');
+    let ussd = '';
     ussdArr.forEach((params)=> {
-      var paramArr = params.split(',');
+      let paramArr = params.split(',');
       if (paramArr[0] === key) {
         ussd = paramArr[1];
       }
@@ -213,9 +204,6 @@ export default class MainView extends BaseComponent {
     });
   }
 
-  onClick(e) {
-  }
-
   onKeyDown(e) {
     this.debug("onKeyDown key:" + e.key);
     switch (e.key) {
@@ -238,7 +226,6 @@ export default class MainView extends BaseComponent {
     this.debug("render");
       return <div id="list" 
             ref={(c) => {this.element = c}}
-            onClick={(e) => {this.onClick(e)}}
             onFocus={(e) => {this.focus(e)}}
             tabindex="-1">
             <div className="header h1">USSD Call</div>
