@@ -1,12 +1,12 @@
 {
-  "name": "My Orange",
+  "name": "Orange Money",
   "description": "webpack app",
   "launch_path": "/index.html",
   "type": "certified",
   "isCursorEnabled":true,
   "icons": {
-    "56": "/style/icons/56.png",
-    "112": "/style/icons/112.png"
+    "56": "/style/icons/56_money.png",
+    "112": "/style/icons/112_money.png"
   },
 
   "permissions": {
