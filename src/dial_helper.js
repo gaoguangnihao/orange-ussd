@@ -101,11 +101,10 @@ class DialHelper extends BaseModule {
       return conn.getDeviceIdentities().then((deviceInfo) => {
         if (deviceInfo[type]) {
           return deviceInfo[type];
-        } else {
-          let errorMsg = `Could not retrieve the ${type.toUpperCase()} code for SIM ${simSlotIndex}`;
-          console.error(errorMsg);
-          return Promise.reject(new Error(errorMsg));
         }
+        let errorMsg = `Could not retrieve the ${type.toUpperCase()} code for SIM ${simSlotIndex}`;
+        console.error(errorMsg);
+        return Promise.reject(new Error(errorMsg));
       });
     });
 
