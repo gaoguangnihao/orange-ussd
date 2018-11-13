@@ -1,3 +1,4 @@
+/* global window, MozActivity */
 import React from 'react';
 import BaseComponent from 'base-component';
 import SimpleNavigationHelper from 'simple-navigation-helper';
@@ -212,9 +213,7 @@ export default class MainView extends BaseComponent {
       case 'Call':
       case 'Enter':
       case 'Backspace':
-        let number = this.input.value;
-        this.debug(`number:${number}`);
-        Dialer.dial(number).then(() => {
+        Dialer.dial(this.input.value).then(() => {
   //        window.close();
         }, () => {
           this.debug('dial error');

@@ -5,7 +5,6 @@ import 'common-scss';
 import ReactSoftKey from 'react-soft-key';
 import Service from 'service';
 import SimpleNavigationHelper from 'simple-navigation-helper';
-import ReactWindowManager from 'react-window-manager';
 import Sideview from './components/side_view';
 import MainView from './main';
 import '../scss/app.scss';
