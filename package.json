@@ -5,8 +5,6 @@
   "main": "src/app.js",
   "author": "guang.gao@kaiostech.com",
   "scripts": {
-    "build": "webpack",
-    "clean": "rm build/bundle.js",
     "lint": "npm run lint:css && npm run lint:js",
     "lint:js": "eslint src --fix",
     "lint:css": "stylelint 'scss/*.scss'"
