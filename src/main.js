@@ -1,17 +1,13 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import BaseComponent from 'base-component';
-//import SimpleNavigationHelper from './components/simpleNavigationHelper.js';
 import SimpleNavigationHelper from 'simple-navigation-helper';
-import Dialer from './dial_helper.js';
-import ReactSimChooser from 'react-sim-chooser';
 import SoftKeyStore from 'soft-key-store';
 import Service from 'service';
-import DialogRenderer from './components/dialog_renderer';
+import Dialer from './dial_helper.js';
 import Config from './config.js';
 
 export default class MainView extends BaseComponent {
-  DEBUG = true;
+  DEBUG = false;
   name='main';
 
   constructor(props) {
@@ -26,13 +22,13 @@ export default class MainView extends BaseComponent {
 
   componentDidMount() {
     this.navigator = new SimpleNavigationHelper('.navigable', this.element);
- 		this.presetNumber().then((result) => {
+    this.presetNumber().then((result) => {
       if (this.isUrl(result)) {
-        this.loadUrl(result)
+        this.loadUrl(result);
       } else {
         this.input.value = result;
       }
- 		});
+    });
 
     this.focus();
     this.updateSoftKeys();
@@ -46,16 +42,16 @@ export default class MainView extends BaseComponent {
   loadUrl(url) {
     if (url && url !== '') {
       if (navigator.onLine) {
-        this.debug('navigator to ' + url);
+        this.debug(`navigator to ${url}`);
     //   window.open(url, '_self', 'remote=true');
         new MozActivity({
-              name: 'view',
-              data: {
-                type: 'url',
-                url: url,
-                isPrivate: false
-              }
-            });
+          name: 'view',
+          data: {
+            type: 'url',
+            url: url,
+            isPrivate: false
+          }
+        });
         setTimeout(() => {
           window.close();
         }, 1000);
@@ -63,55 +59,60 @@ export default class MainView extends BaseComponent {
         this.debug('Network error');
       }
     } else {
-      this.debug('Can not get url, mcc/mnc ' + 'key,'  + 'urlStr:' + urlStr);
+      this.debug(`Can not get url:${url}`);
     }
   }
 
   presetNumber() {
-  	let self = this;
-  	return new Promise((resolve, reject) => {
-  		if (!navigator.mozMobileConnections[0] || !navigator.mozMobileConnections[0].iccId) {
-  		  this.debug('iccId is null');
-  		  reject();
-  		  return;
-  		} 
+    let self = this;
+    return new Promise((resolve, reject) => {
+      let iccManager = navigator.mozIccManager;
+      let conn = navigator.mozMobileConnections[0];
+      let iccId = conn.iccId;
+      let icc = iccManager.getIccById(iccId);
 
-  		let iccId = navigator.mozMobileConnections[0].iccId;
-  		if (!navigator.mozIccManager || !navigator.mozIccManager.getIccById(iccId)) {
-  		  this.debug('Can not get iccInfo');
-  		  reject()
-  		  return;
-  		}
-  		// Genarate the key by mcc/mnc
-  		let iccInfo = navigator.mozIccManager.getIccById(iccId).iccInfo;
-  		let key = iccInfo.mcc + iccInfo.mnc;
-  		this.debug('key :'  + key);
+      if (icc) {
+        // Genarate the key by mcc/mnc
+        let key = icc.iccInfo.mcc + icc.iccInfo.mnc;
+        this.debug(`key :${key}`);
+        // Get config url string from settings db
+        navigator.mozSettings.createLock().get(Config.KEY_USSDS).then((result) => {
+          let value = result[Config.KEY_USSDS];
+          this.debug(`result:${value}`);
+          let ussds = Config.ussds;
+          if (value) {
+            ussds = JSON.parse(value);
+          }
+          this.debug(`ussds:${JSON.stringify(ussds)}`);
+          let ussd = ussds[key];
 
-  		// Get config url string from settings db
-  		navigator.mozSettings.createLock().get(Config.KEY_USSDSTR).then((result) => {
-  		  let ussds = result[Config.KEY_USSDSTR];
-        ussds = ussds || Config.ussdStr;
-  		  this.debug('ussds:' + ussds);
-  		  let ussd = self.parseUssdbyKey(ussds, key);
-  		  self.debug(ussd);
-  		  resolve(ussd);
-  		}, () => {
-  		  self.debug('Get ussd from db error');
-  		  reject();
-  		})
-  	})
-  }
-
-  parseUssdbyKey(str, key) {
-    let ussdArr = str.split(';');
-    let ussd = '';
-    ussdArr.forEach((params)=> {
-      let paramArr = params.split(',');
-      if (paramArr[0] === key) {
-        ussd = paramArr[1];
+          if (!ussd) {
+            this.showDialog({
+              type: 'alert',
+              header: 'GenericFailure',
+              content: 'insert-orange-sim-msg',
+              translated: false,
+              noClose: false
+            });
+            reject();
+          } else {
+            this.debug(ussd);
+            resolve(ussd);
+          }
+        }, () => {
+          self.debug('Get ussd from db error');
+          reject();
+        });
+      } else {
+        this.showDialog({
+          type: 'alert',
+          header: 'GenericFailure',
+          content: 'insert-orange-sim-msg',
+          translated: false,
+          noClose: false
+        });
       }
     });
-    return ussd;
   }
 
   updateSoftKeys() {
@@ -121,32 +122,33 @@ export default class MainView extends BaseComponent {
   }
 
   focus() {
-  	this.debug('focus ' + this.input.value.length);
-  	this.input.setSelectionRange(this.input.value.length, this.input.value.length);
-  	this.input.focus();
-  	this.updateSoftKeys();
+    this.debug(`focus ${this.input.value.length}`);
+    this.input.setSelectionRange(this.input.value.length, this.input.value.length);
+    this.input.focus();
+    this.updateSoftKeys();
   }
 
   showDialog(options) {
-  	this.debug('showDialog options:' + JSON.stringify(options));
-  	Service.request('showDialog', {
-  	  ...options,
-  	  onOk:()=> {
-  	  	this.focus();
-  	  }
-  	});
+    this.debug(`showDialog options:${JSON.stringify(options)}`);
+    Service.request('showDialog', {
+      ...options,
+      onOk: () => {
+        this.focus();
+      }
+    });
   }
 
   showLoading() {
     this.debug('showLoading');
     Service.request('showDialog', {
       type: 'alert',
+      header: 'send',
       content: 'sending',
       otherClass: 'is-loading',
       translated: true,
       noClose: false,
-      onOk:()=> {
-      	this.focus();
+      onOk: () => {
+        this.focus();
       }
     });
   }
@@ -163,7 +165,7 @@ export default class MainView extends BaseComponent {
       content: message,
       translated: true,
       noClose: false,
-      onOk:()=> {
+      onOk: () => {
         this.focus();
       }
     });
@@ -183,7 +185,7 @@ export default class MainView extends BaseComponent {
         content: JSON.stringify(evt),
         translated: true,
         noClose: false,
-        onOk:()=> {
+        onOk: () => {
           this.focus();
         }
       });
@@ -198,22 +200,23 @@ export default class MainView extends BaseComponent {
       content: evt.message.replace(/\\r\\n|\\r|\\n/g, '\n'),
       translated: true,
       noClose: false,
-      onOk:()=> {
+      onOk: () => {
         this.focus();
       }
     });
   }
 
   onKeyDown(e) {
-    this.debug("onKeyDown key:" + e.key);
+    this.debug(`onKeyDown key:${e.key}`);
     switch (e.key) {
       case 'Call':
       case 'Enter':
+      case 'Backspace':
         let number = this.input.value;
-        this.debug('number:' + number);
-        Dialer.dial(number).then(()=> {
+        this.debug(`number:${number}`);
+        Dialer.dial(number).then(() => {
   //        window.close();
-        }, ()=> {
+        }, () => {
           this.debug('dial error');
         });
         break;
@@ -223,15 +226,19 @@ export default class MainView extends BaseComponent {
   }
 
   render() {
-    this.debug("render");
-      return <div id="list" 
-            ref={(c) => {this.element = c}}
-            onFocus={(e) => {this.focus(e)}}
-            tabindex="-1">
-            <div className="header h1">USSD Call</div>
-            <input className='navigable' type='tel'
-            ref={(c) => {this.input = c}}
-             onKeyDown={(e) => {this.onKeyDown(e)}}/>
-          </div>    
+    this.debug('render');
+    return (<div
+      id="list"
+      ref={(c) => { this.element = c; }}
+      onFocus={(e) => { this.focus(e); }}
+      tabIndex="-1"
+    >
+      <div className="header h1">USSD Call</div>
+      <input
+        className="navigable" type="tel"
+        ref={(c) => { this.input = c; }}
+        onKeyDown={(e) => { this.onKeyDown(e); }}
+      />
+    </div>);
   }
 }

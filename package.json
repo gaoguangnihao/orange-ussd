@@ -8,7 +8,7 @@
     "build": "webpack",
     "clean": "rm build/bundle.js",
     "lint": "npm run lint:css && npm run lint:js",
-    "lint:js": "eslint src --quiet",
+    "lint:js": "eslint src --fix",
     "lint:css": "stylelint 'scss/*.scss'"
   },
   "precommit": [
