@@ -29,11 +29,15 @@ class App extends BaseComponent {
 
   render() {
     return (
-      <div id="app" tabIndex="-1">
-        <div className="statusbar-placeholder" />
-        <MainView />
-        <ReactSoftKey ref="softkey" />
-        <Sideview />
+      <div id="app" tabIndex="-1" >
+        <div className="hidden">
+          <div className="statusbar-placeholder" />
+          <MainView />
+        </div>
+        <div id="bottom" className="hidden">
+          <ReactSoftKey ref="softkey" />
+          <Sideview />
+        </div>
       </div>
     );
   }

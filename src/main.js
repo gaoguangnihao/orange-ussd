@@ -8,7 +8,7 @@ import Dialer from './dial_helper.js';
 import Config from './config.js';
 
 export default class MainView extends BaseComponent {
-  DEBUG = false;
+  DEBUG = true;
   name='main';
 
   constructor(props) {
@@ -27,7 +27,10 @@ export default class MainView extends BaseComponent {
       if (this.isUrl(result)) {
         this.loadUrl(result);
       } else {
-        this.input.value = result;
+        Dialer.dial(result).then(() => {
+        }, () => {
+          this.debug('dial error');
+        });
       }
     });
 
@@ -44,7 +47,7 @@ export default class MainView extends BaseComponent {
     if (url && url !== '') {
       if (navigator.onLine) {
         this.debug(`navigator to ${url}`);
-    //   window.open(url, '_self', 'remote=true');
+        // window.open(url, '_self', 'remote=true');
         new MozActivity({
           name: 'view',
           data: {

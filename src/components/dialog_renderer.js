@@ -25,6 +25,7 @@ export default class DialogRenderer extends BaseComponent {
   }
 
   showDialog(options) {
+    document.getElementById('bottom').classList.remove('hidden');
     this.setState({
       dialog: true,
       options: options
@@ -39,6 +40,8 @@ export default class DialogRenderer extends BaseComponent {
     } else {
       this.refs.dialog.on('closed', () => {
         this.debug('closed');
+        // hidden bottom
+        document.getElementById('bottom').classList.add('hidden');
         this.setState({
           dialog: false,
           options: null
