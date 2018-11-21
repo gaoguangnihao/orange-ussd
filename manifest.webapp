@@ -1,12 +1,12 @@
 {
-  "name": "Orange Money",
+  "name": "Orange TV",
   "description": "webpack app",
   "launch_path": "/index.html",
   "type": "certified",
   "isCursorEnabled":true,
   "icons": {
-    "56": "/style/icons/56_money.png",
-    "112": "/style/icons/112_money.png"
+    "56": "/style/icons/56.png",
+    "112": "/style/icons/112.png"
   },
 
   "permissions": {
