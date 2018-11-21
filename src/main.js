@@ -84,7 +84,10 @@ export default class MainView extends BaseComponent {
               header: 'GenericFailure',
               content: 'insert-orange-sim-msg',
               translated: false,
-              noClose: false
+              noClose: false,
+              onOk: () => {
+                window.close();
+              }
             });
             reject();
           } else {
@@ -101,7 +104,10 @@ export default class MainView extends BaseComponent {
           header: 'GenericFailure',
           content: 'insert-orange-sim-msg',
           translated: false,
-          noClose: false
+          noClose: false,
+          onOk: () => {
+            window.close();
+          }
         });
       }
     });
@@ -126,6 +132,7 @@ export default class MainView extends BaseComponent {
       ...options,
       onOk: () => {
         this.focus();
+        options.onOk && options.onOk();
       }
     });
   }
