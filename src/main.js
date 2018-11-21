@@ -47,18 +47,18 @@ export default class MainView extends BaseComponent {
     if (url && url !== '') {
       if (navigator.onLine) {
         this.debug(`navigator to ${url}`);
-        // window.open(url, '_self', 'remote=true');
-        new MozActivity({
-          name: 'view',
-          data: {
-            type: 'url',
-            url: url,
-            isPrivate: false
-          }
-        });
         setTimeout(() => {
+          window.open(url, '_blank');
+          // new MozActivity({
+          //   name: 'view',
+          //   data: {
+          //     type: 'url',
+          //     url: url,
+          //     isPrivate: false
+          //   }
+          // });
           window.close();
-        }, 1000);
+        }, 200);
       } else {
         this.debug('Network error');
       }
