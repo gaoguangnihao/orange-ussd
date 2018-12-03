@@ -45,23 +45,11 @@ export default class MainView extends BaseComponent {
 
   loadUrl(url) {
     if (url && url !== '') {
-      if (navigator.onLine) {
-        this.debug(`navigator to ${url}`);
-        setTimeout(() => {
-          window.open(url, '_blank');
-          // new MozActivity({
-          //   name: 'view',
-          //   data: {
-          //     type: 'url',
-          //     url: url,
-          //     isPrivate: false
-          //   }
-          // });
-          window.close();
-        }, 200);
-      } else {
-        this.debug('Network error');
-      }
+      this.debug(`navigator to ${url}`);
+      setTimeout(() => {
+        window.open(url, '_blank');
+        window.close();
+      }, 200);
     } else {
       this.debug(`Can not get url:${url}`);
     }
