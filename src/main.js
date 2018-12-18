@@ -139,22 +139,13 @@ export default class MainView extends BaseComponent {
 
   showLoading() {
     this.debug('showLoading');
-    Service.request('showDialog', {
-      type: 'alert',
-      header: 'send',
-      content: 'sending',
-      otherClass: 'is-loading',
-      translated: true,
-      noClose: false,
-      onOk: () => {
-        this.focus();
-      }
-    });
+    Service.request('showLoading');
   }
 
   showAlert(title, message) {
     this.debug('showAlert');
-    Service.request('Dialer:hide');
+    // hide loading 
+    Service.request('hideLoading');
     if (!title && !message) {
       return;
     }
@@ -173,7 +164,7 @@ export default class MainView extends BaseComponent {
   onUssdReceived(evt) {
     this.debug('onUssdReceived');
     if (Dialer.mmiloading) {
-      Service.request('hideDialog');
+      Service.request('hideLoading');
     }
 
     if (!evt.message) {

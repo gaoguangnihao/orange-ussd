@@ -1,5 +1,6 @@
 {
   "name": "My Orange",
+  "version": "v2",
   "description": "webpack app",
   "launch_path": "/index.html",
   "type": "certified",
