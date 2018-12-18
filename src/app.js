@@ -7,7 +7,9 @@ import Service from 'service';
 import SimpleNavigationHelper from 'simple-navigation-helper';
 import Sideview from './components/side_view';
 import MainView from './main';
+import Loading from './components/loading';
 import '../scss/app.scss';
+import '../scss/loading.scss';
 
 class App extends BaseComponent {
   name = 'App';
@@ -30,6 +32,7 @@ class App extends BaseComponent {
   render() {
     return (
       <div id="app" tabIndex="-1" >
+        <Loading/>
         <div className="hidden">
           <div className="statusbar-placeholder" />
           <MainView />

@@ -43,7 +43,7 @@ class DialHelper extends BaseModule {
         this._session.send(res);
       } else {
         // for canceling the mmi-loading dialog
-        Service.request('hideDialog');
+        Service.request('hideLoading');
         this.mmiloading = false;
         this._session.cancel();
         this._session = null;
