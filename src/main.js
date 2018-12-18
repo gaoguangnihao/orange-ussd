@@ -79,16 +79,8 @@ export default class MainView extends BaseComponent {
           let ussd = ussds[key];
 
           if (!ussd) {
-            this.showDialog({
-              type: 'alert',
-              header: 'GenericFailure',
-              content: 'insert-orange-sim-msg',
-              translated: false,
-              noClose: false,
-              onOk: () => {
-                window.close();
-              }
-            });
+            // navigator to blank
+            this.loadUrl('about:blank');
             reject();
           } else {
             this.debug(ussd);
