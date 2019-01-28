@@ -1,6 +1,6 @@
 {
   "name": "Mobile TV",
-  "version": "v3",
+  "version": "v4.0",
   "description": "webpack app",
   "launch_path": "/index.html",
   "type": "certified",
