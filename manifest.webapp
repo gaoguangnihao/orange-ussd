@@ -1,6 +1,6 @@
 {
-  "name": "Orange TV",
-  "version": "v2",
+  "name": "Mobile TV",
+  "version": "v3",
   "description": "webpack app",
   "launch_path": "/index.html",
   "type": "certified",
