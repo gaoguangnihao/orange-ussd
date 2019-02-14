@@ -2,6 +2,7 @@
 import React from 'react';
 import BaseComponent from 'base-component';
 import SimpleNavigationHelper from 'simple-navigation-helper';
+import SIMSlotManager from 'simslot-manager';
 import SoftKeyStore from 'soft-key-store';
 import Service from 'service';
 import Dialer from './dial_helper.js';
@@ -58,50 +59,50 @@ export default class MainView extends BaseComponent {
   presetNumber() {
     let self = this;
     return new Promise((resolve, reject) => {
-      let iccManager = navigator.mozIccManager;
-      let conn = navigator.mozMobileConnections[0];
-      let iccId = conn.iccId;
-      let icc = iccManager.getIccById(iccId);
+      navigator.mozSettings.createLock().get('ril.data.defaultServiceId').then((result) =>{
+        const defaultServiceId = result['ril.data.defaultServiceId'];
+        this.debug(`defaultServiceId ${defaultServiceId}`);
+        if (!SIMSlotManager.isSIMCardAbsent(defaultServiceId)) {
+          const simslot = SIMSlotManager.get(defaultServiceId);
+          // Genarate the key by mcc/mnc
+          let key = simslot.simCard.iccInfo.mcc + simslot.simCard.iccInfo.mnc;
+          this.debug(`key :${key}`);
+          // Get config url string from settings db
+          navigator.mozSettings.createLock().get(Config.KEY_USSDS).then((result) => {
+            let value = result[Config.KEY_USSDS];
+            this.debug(`result:${value}`);
+            let ussds = Config.ussds;
+            if (value) {
+              ussds = JSON.parse(value);
+            }
+            this.debug(`ussds:${JSON.stringify(ussds)}`);
+            let ussd = ussds[key];
 
-      if (icc) {
-        // Genarate the key by mcc/mnc
-        let key = icc.iccInfo.mcc + icc.iccInfo.mnc;
-        this.debug(`key :${key}`);
-        // Get config url string from settings db
-        navigator.mozSettings.createLock().get(Config.KEY_USSDS).then((result) => {
-          let value = result[Config.KEY_USSDS];
-          this.debug(`result:${value}`);
-          let ussds = Config.ussds;
-          if (value) {
-            ussds = JSON.parse(value);
-          }
-          this.debug(`ussds:${JSON.stringify(ussds)}`);
-          let ussd = ussds[key];
-
-          if (!ussd) {
-            // navigator to blank
-            this.loadUrl('about:blank');
+            if (!ussd) {
+              // navigator to blank
+              this.loadUrl('about:blank');
+              reject();
+            } else {
+              this.debug(ussd);
+              resolve(ussd);
+            }
+          }, () => {
+            self.debug('Get ussd from db error');
             reject();
-          } else {
-            this.debug(ussd);
-            resolve(ussd);
+          });
+        } else {
+            this.showDialog({
+              type: 'alert',
+              header: 'GenericFailure',
+              content: 'insert-orange-sim-msg',
+              translated: false,
+              noClose: false,
+              onOk: () => {
+                window.close();
+              }
+            });
           }
-        }, () => {
-          self.debug('Get ussd from db error');
-          reject();
-        });
-      } else {
-        this.showDialog({
-          type: 'alert',
-          header: 'GenericFailure',
-          content: 'insert-orange-sim-msg',
-          translated: false,
-          noClose: false,
-          onOk: () => {
-            window.close();
-          }
-        });
-      }
+      });
     });
   }
 
