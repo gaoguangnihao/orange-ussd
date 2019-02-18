@@ -1,6 +1,7 @@
 {
   "name": "Mobile TV",
-  "version": "v4.2",
+  "version": "v4.3",
+  "origin":"app://orange-tv.kaiostech.com",
   "description": "webpack app",
   "launch_path": "/index.html",
   "categories": ["orange"],
@@ -24,7 +25,9 @@
     "device-storage:sdcard": { "access": "readcreate" },
     "desktop-notification":{}
   },
-
+  "messages": [
+     { "ussd-received": "/index.html" }
+  ],
   "developer": {
     "name": "kaiso tech",
     "url": "http://example.com"
