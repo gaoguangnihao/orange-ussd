@@ -1,6 +1,6 @@
 {
   "name": "Mobile TV",
-  "version": "v4.3",
+  "version": "v4.4",
   "origin":"app://orange-tv.kaiostech.com",
   "description": "webpack app",
   "launch_path": "/index.html",
