@@ -36,18 +36,32 @@ class DialHelper extends BaseModule {
     // evt.session means we need to user's interaction
     if (evt.session) {
       this._session = evt.session;
-      let res = window.prompt(evt.message);
-      if (res) {
-        this.mmiloading = true;
-        this.emit('mmiloading');
-        this._session.send(res);
-      } else {
+      let cancelSession = () => {
         // for canceling the mmi-loading dialog
-        Service.request('hideLoading');
+        Service.request('hideDialog');
         this.mmiloading = false;
         this._session.cancel();
         this._session = null;
-      }
+      };
+
+      Service.request('showDialog', {
+        type: 'prompt',
+        header: toL10n('confirmation'),
+        content: evt.message.replace(/\\r\\n|\\r|\\n/g, '\n'),
+        translated: true,
+        noClose: false,
+        onOk: (res) => {
+          if (res) {
+            this.mmiloading = true;
+            this.emit('mmiloading');
+            this._session.send(res);
+          } else {
+            cancelSession();
+          }
+        },
+        onCancel: cancelSession,
+        onBack: cancelSession
+      });
     } else {
       this.emit('ussd-received', evt);
       this.mmiloading = false;
