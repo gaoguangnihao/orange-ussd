@@ -1,6 +1,6 @@
 {
   "name": "Orange Money",
-  "version": "v4.6",
+  "version": "v4.7",
   "origin":"app://orange-money.kaiostech.com",
   "description": "webpack app",
   "launch_path": "/index.html",
