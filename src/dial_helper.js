@@ -30,9 +30,21 @@ class DialHelper extends BaseModule {
       '*#*#0574#*#*'
     ];
     navigator.mozSetMessageHandler('ussd-received', this.onUssdReceived.bind(this));
+
+    this.keypadHelper = new KeypadHelper();
+    this.keypadHelper.start();
+  }
+
+  handleModeChanged = (data) => {
+    this.inputMode = data.mode;
+    if(this.inputMode !== '123'){
+      this.keypadHelper.setActiveModeChangedCallback(null);
+      this.keypadHelper.setActiveMode({mode: '123', byUser: false});
+    }
   }
 
   onUssdReceived(evt) {
+    this.keypadHelper.setActiveModeChangedCallback(this.handleModeChanged.bind(this));
     // evt.session means we need to user's interaction
     if (evt.session) {
       this._session = evt.session;
@@ -42,6 +54,7 @@ class DialHelper extends BaseModule {
         this.mmiloading = false;
         this._session.cancel();
         this._session = null;
+        this.keypadHelper.setActiveMode({mode: this.inputMode, byUser: false});
       };
 
       Service.request('showDialog', {
@@ -50,12 +63,12 @@ class DialHelper extends BaseModule {
         content: evt.message.replace(/\\r\\n|\\r|\\n/g, '\n'),
         translated: true,
         noClose: false,
-        inputType:'tel',
         onOk: (res) => {
           if (res) {
             this.mmiloading = true;
             this.emit('mmiloading');
             this._session.send(res);
+            this.keypadHelper.setActiveMode({mode: this.inputMode, byUser: false});
           } else {
             cancelSession();
           }
