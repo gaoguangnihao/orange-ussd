@@ -50,6 +50,7 @@ class DialHelper extends BaseModule {
         content: evt.message.replace(/\\r\\n|\\r|\\n/g, '\n'),
         translated: true,
         noClose: false,
+        inputType:'tel',
         onOk: (res) => {
           if (res) {
             this.mmiloading = true;
