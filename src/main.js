@@ -20,6 +20,12 @@ export default class MainView extends BaseComponent {
     Dialer.on('mmiloaded', this.showAlert.bind(this));
     Dialer.on('ussd-received', this.onUssdReceived.bind(this));
     Dialer.on('showDialog', this.showDialog.bind(this));
+
+    Service.register('exitApp', this);
+  }
+
+  exitApp() {
+    window.close();
   }
 
   componentDidMount() {
@@ -109,6 +115,7 @@ export default class MainView extends BaseComponent {
                 window.close();
               }
             });
+   //         Dialer.onUssdReceived({session:{cancel:()=>{}, send:(res)=>{}}, message:'123123123123123'});
           }
       });
     });
@@ -203,11 +210,6 @@ export default class MainView extends BaseComponent {
       case 'Call':
       case 'Enter':
       case 'Backspace':
-        Dialer.dial(this.input.value).then(() => {
-  //        window.close();
-        }, () => {
-          this.debug('dial error');
-        });
         break;
       default:
         break;

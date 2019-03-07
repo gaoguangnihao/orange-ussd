@@ -1,6 +1,6 @@
 {
   "name": "My Orange",
-  "version": "v4.7",
+  "version": "v4.8",
   "origin":"app://my-orange.kaiostech.com",
   "description": "webpack app",
   "launch_path": "/index.html",

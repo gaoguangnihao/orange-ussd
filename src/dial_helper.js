@@ -49,12 +49,14 @@ class DialHelper extends BaseModule {
     if (evt.session) {
       this._session = evt.session;
       let cancelSession = () => {
-        // for canceling the mmi-loading dialog
-        Service.request('hideLoading');
         this.mmiloading = false;
         this._session.cancel();
         this._session = null;
         this.keypadHelper.setActiveMode({mode: this.inputMode, byUser: false});
+
+        // for canceling the mmi-loading dialog
+        Service.request('hideLoading');
+        Service.request('exitApp');
       };
 
       Service.request('showDialog', {
