@@ -175,31 +175,19 @@ export default class MainView extends BaseComponent {
       Service.request('hideLoading');
     }
 
-    if (!evt.message) {
-      // XXX: for debuging
-      Service.request('showDialog', {
-        type: 'alert',
-        header: 'Error USSD case!',
-        content: JSON.stringify(evt),
-        translated: true,
-        noClose: false,
-        onOk: () => {
-          this.focus();
-        }
-      });
-      return;
-    }
-
     let network = navigator.mozMobileConnections[evt.serviceId || 0].voice.network;
     let operator = network ? (network.shortName || network.longName) : '';
     Service.request('showDialog', {
       type: 'alert',
       header: operator,
-      content: evt.message.replace(/\\r\\n|\\r|\\n/g, '\n'),
+      content: evt.message
+        ? evt.message.replace(/\\r\\n|\\r|\\n/g, '\n')
+        : navigator.mozL10n.get('GetEmptyUssdPrompt'),
       translated: true,
       noClose: false,
       onOk: () => {
         this.focus();
+        this.exitApp();
       }
     });
   }

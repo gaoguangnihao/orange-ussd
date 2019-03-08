@@ -1,6 +1,7 @@
 {
+<<<<<<< HEAD
   "name": "My Orange",
-  "version": "v4.8",
+  "version": "v4.9",
   "origin":"app://my-orange.kaiostech.com",
   "description": "webpack app",
   "launch_path": "/index.html",
