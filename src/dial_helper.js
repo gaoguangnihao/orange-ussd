@@ -43,9 +43,10 @@ class DialHelper extends BaseModule {
     }
   }
 
-  onUssdReceived(evt) {
+  handleUssd(evt) {
     this.keypadHelper.setActiveModeChangedCallback(this.handleModeChanged.bind(this));
     // evt.session means we need to user's interaction
+    this.debug('onUssdReceived evt:' + JSON.stringify(evt));
     if (evt.session) {
       this._session = evt.session;
       let cancelSession = () => {
@@ -59,7 +60,7 @@ class DialHelper extends BaseModule {
         Service.request('exitApp');
       };
 
-      Service.request('showDialog', {
+      this.emit('showDialog', {
         type: 'prompt',
         header: toL10n('confirmation'),
         content: evt.message.replace(/\\r\\n|\\r|\\n/g, '\n'),
@@ -81,6 +82,12 @@ class DialHelper extends BaseModule {
     } else {
       this.emit('ussd-received', evt);
       this.mmiloading = false;
+    }
+  }
+
+  onUssdReceived(evt) {
+    if (document.hasFocus()) {
+      this.handleUssd(evt);
     }
   }
 

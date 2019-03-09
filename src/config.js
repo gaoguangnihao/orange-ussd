@@ -12,13 +12,11 @@ class Config {
     "63086": "http://myorange.orange.cd/myorangewebapp/MyOrange-CongoDemocratique/",
     "63089": "http://myorange.orange.cd/myorangewebapp/MyOrange-CongoDemocratique/",
     "60801": "http://myorange.orange.sn/myorangewebapp/MyOrange-Senegal/",
-    "61302": "Service not available",
     "62303": "#123#",
     "60201": "#100#",
-    "63203": "#123#",
+    "63203": "#111#",
     "61807": "*124#",
     "61002": "http://myorange.orangemali.com/myorangewebapp/MyOrange/",
-    "61901": "Service not available",
     "60501": "*111#"
   };
 }

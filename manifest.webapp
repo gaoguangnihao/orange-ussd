@@ -1,6 +1,6 @@
 {
   "name": "My Orange",
-  "version": "v4.9",
+  "version": "v5.1",
   "origin":"app://my-orange.kaiostech.com",
   "description": "webpack app",
   "launch_path": "/index.html",
@@ -11,7 +11,20 @@
     "56": "/style/icons/56.png",
     "112": "/style/icons/112.png"
   },
-
+  "locales": {
+    "en-US": {
+      "name": "My Orange",
+      "description": "Orange app"
+    },
+    "pt-PT": {
+      "name": "Nha Orange",
+      "description": "Orange app"
+    },
+    "pt-BR": {
+      "name": "Nha Orange",
+      "description": "Orange app"
+    }
+  },
   "permissions": {
     "feature-detection": {},
     "telephony":{},

@@ -12,6 +12,8 @@ export default class MainView extends BaseComponent {
   DEBUG = true;
   name='main';
 
+  inited = false;  //Prevent dialog popup before inited. 
+
   constructor(props) {
     super(props);
     this.prefix = 'list';
@@ -31,6 +33,7 @@ export default class MainView extends BaseComponent {
   componentDidMount() {
     this.navigator = new SimpleNavigationHelper('.navigable', this.element);
     this.presetNumber().then((result) => {
+      this.inited = true;
       if (this.isUrl(result)) {
         this.loadUrl(result);
       } else {
@@ -39,6 +42,19 @@ export default class MainView extends BaseComponent {
           this.debug('dial error');
         });
       }
+    }, (error) => {
+      this.inited = true;
+      this.showDialog({
+        type: 'alert',
+        header: 'GenericFailure',
+        content: 'insert-orange-sim-msg',
+        translated: false,
+        noClose: false,
+        onOk: () => {
+          this.exitApp();
+        }
+      });
+      //Dialer.onUssdReceived({session:{cancel:()=>{}, send:(res)=>{}}, message:'123123123123123'});
     });
 
     this.focus();
@@ -55,7 +71,7 @@ export default class MainView extends BaseComponent {
       this.debug(`navigator to ${url}`);
       setTimeout(() => {
         window.open(url, '_blank');
-        window.close();
+        this.exitApp();
       }, 200);
     } else {
       this.debug(`Can not get url:${url}`);
@@ -67,7 +83,6 @@ export default class MainView extends BaseComponent {
     return new Promise((resolve, reject) => {
       navigator.mozSettings.createLock().get('ril.data.defaultServiceId').then((result) =>{
         const defaultServiceId = result['ril.data.defaultServiceId'];
-        this.debug(`defaultServiceId ${defaultServiceId}`);
         if (!SIMSlotManager.isSIMCardAbsent(defaultServiceId)) {
           const simslot = SIMSlotManager.get(defaultServiceId);
           // Genarate the key by mcc/mnc
@@ -76,25 +91,13 @@ export default class MainView extends BaseComponent {
           // Get config url string from settings db
           navigator.mozSettings.createLock().get(Config.KEY_USSDS).then((result) => {
             let value = result[Config.KEY_USSDS];
-            this.debug(`result:${value}`);
             let ussds = Config.ussds;
             if (value) {
               ussds = JSON.parse(value);
             }
             this.debug(`ussds:${JSON.stringify(ussds)}`);
             let ussd = ussds[key];
-
             if (!ussd) {
-              this.showDialog({
-                type: 'alert',
-                header: 'GenericFailure',
-                content: 'insert-orange-sim-msg',
-                translated: false,
-                noClose: false,
-                onOk: () => {
-                  window.close();
-                }
-              });
               reject();
             } else {
               this.debug(ussd);
@@ -105,17 +108,7 @@ export default class MainView extends BaseComponent {
             reject();
           });
         } else {
-            this.showDialog({
-              type: 'alert',
-              header: 'GenericFailure',
-              content: 'insert-orange-sim-msg',
-              translated: false,
-              noClose: false,
-              onOk: () => {
-                window.close();
-              }
-            });
-   //         Dialer.onUssdReceived({session:{cancel:()=>{}, send:(res)=>{}}, message:'123123123123123'});
+          reject();
           }
       });
     });
@@ -135,12 +128,16 @@ export default class MainView extends BaseComponent {
   }
 
   showDialog(options) {
+    if(!this.inited) {
+      console.log('app not inited, ignore show dialog');
+      return;
+    }
     this.debug(`showDialog options:${JSON.stringify(options)}`);
     Service.request('showDialog', {
       ...options,
-      onOk: () => {
+      onOk: (res) => {
         this.focus();
-        options.onOk && options.onOk();
+        options.onOk && options.onOk(res);
       }
     });
   }
@@ -170,7 +167,11 @@ export default class MainView extends BaseComponent {
   }
 
   onUssdReceived(evt) {
-    this.debug('onUssdReceived');
+    if(!this.inited) {
+      console.log('app not inited, ignore ussd-received');
+      return;
+    }
+    this.debug('onUssdReceived msg:' + evt.message);
     if (Dialer.mmiloading) {
       Service.request('hideLoading');
     }
