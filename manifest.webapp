@@ -1,8 +1,8 @@
 {
   "name": "Orange Money",
-  "version": "v5.0",
+  "version": "6.0.0",
   "origin":"app://orange-money.kaiostech.com",
-  "description": "webpack app",
+  "description": "orange money app for orange",
   "launch_path": "/index.html",
   "categories": ["orange"],
   "type": "certified",
@@ -11,7 +11,13 @@
     "56": "/style/icons/56_money.png",
     "112": "/style/icons/112_money.png"
   },
-
+  "locales": {
+    "en-US": {
+      "name": "Orange Money",
+      "description": "orange money app for orange"
+    }
+  },
+  "default_locale": "en-US",
   "permissions": {
     "feature-detection": {},
     "telephony":{},
@@ -30,6 +36,6 @@
   ],
   "developer": {
     "name": "kaiso tech",
-    "url": "http://example.com"
+    "url": "https://developer.kaiostech.com"
   }
 }
