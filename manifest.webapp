@@ -1,8 +1,8 @@
 {
   "name": "Mobile TV",
-  "version": "v4.8",
+  "version": "4.9.0",
   "origin":"app://orange-tv.kaiostech.com",
-  "description": "webpack app",
+  "description": "Mobile TV app for orange",
   "launch_path": "/index.html",
   "categories": ["orange"],
   "type": "certified",
@@ -11,7 +11,13 @@
     "56": "/style/icons/56.png",
     "112": "/style/icons/112.png"
   },
-
+  "locales": {
+    "en-US": {
+      "name": "Mobile TV",
+      "description": "Mobile TV app for orange"
+    }
+  },
+  "default_locale": "en-US",
   "permissions": {
     "feature-detection": {},
     "telephony":{},
@@ -27,6 +33,6 @@
   },
   "developer": {
     "name": "kaiso tech",
-    "url": "http://example.com"
+    "url": "https://developer.kaiostech.com"
   }
 }
