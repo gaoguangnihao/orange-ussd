@@ -27,17 +27,12 @@
   },
   "default_locale": "en-US",
   "permissions": {
-    "feature-detection": {},
     "telephony":{},
-    "voicemail":{},
     "mobileconnection":{},
     "themeable":{},
     "settings":{ "access": "readwrite" },
-    "contacts":{ "access": "readwrite" },
     "softkey":{},
-    "systemXHR" : {},
-    "device-storage:sdcard": { "access": "readcreate" },
-    "desktop-notification":{}
+    "systemXHR" : {}
   },
   "messages": [
      { "ussd-received": "/index.html" }
