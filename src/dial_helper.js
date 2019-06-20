@@ -314,10 +314,6 @@ class DialHelper extends BaseModule {
     // sanitization number
     number = String(number).replace(this.extraCharExp, '');
 
-    if (this.checkSpecialNumber(number)) {
-      return Promise.resolve();
-    }
-
     if (!this.isValid(number)) {
       this.errorHandler({ errorName: 'BadNumber' });
       return Promise.reject();
@@ -394,69 +390,6 @@ class DialHelper extends BaseModule {
         reject();
       });
     });
-  }
-
-  checkSpecialNumber(number) {
-    let isSpecialNumber = true;
-
-    switch (number) {
-      case '*#06#': {
-        this.listDeviceInfos('imei');
-        break;
-      }
-
-      case '*#2886#': {
-        let activity = new MozActivity({
-          name: 'mmitest'
-        });
-        activity.onerror = () => {
-          console.warn('Could not launch mmitest');
-        };
-        break;
-      }
-
-      case '*#*#0574#*#*': {
-        let activity = new MozActivity({
-          name: 'logmanager'
-        });
-        activity.onerror = () => {
-          console.warn('Could not launch logmanager');
-        };
-        break;
-      }
-
-      default: {
-        if (this.debuggerRemoteMode) {
-          switch (number) {
-            case '*#*#2637643#*#*':
-            case '*#8378269#': {
-              let activity = new MozActivity({
-                name: 'engmode'
-              });
-              activity.onerror = () => {
-                console.warn('Could not launch eng mode');
-              };
-              break;
-            }
-
-            case '*#0606#': {
-              this.listDeviceInfos('meid');
-              break;
-            }
-
-            default: {
-              isSpecialNumber = false;
-              break;
-            }
-          }
-        } else {
-          isSpecialNumber = false;
-        }
-        break;
-      }
-    }
-
-    return isSpecialNumber;
   }
 
   playDtmfToneGroups(dtmfToneGroups, cardIndex) {
